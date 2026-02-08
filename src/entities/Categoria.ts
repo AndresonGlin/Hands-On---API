@@ -1,8 +1,8 @@
-import { Column, Entity, PrimaryGeneratedColumn, type NumericType } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany } from "typeorm";
+import { Produto } from "./Produto.js";
 
-@Entity("categoria")
+@Entity("categorias")
 export class Categoria {
-
     @PrimaryGeneratedColumn("uuid")
     id: string;
 
@@ -10,12 +10,15 @@ export class Categoria {
     nome: string;
 
     @Column({ type: "varchar", nullable: true })
-    descricao: string; //inserir parametro de opcional
+    descricao: string;
 
-    @Column({ type: "timestamp", nullable: false, name: "data_criacao" })
+    @CreateDateColumn({ name: "data_criacao" })
     dataCriacao: Date;
 
-    @Column({ type: "timestamp", nullable: false, name: "data_atualizacao" })
+    @UpdateDateColumn({ name: "data_atualizacao" })
     dataAtualizacao: Date;
 
+    //Relacionamento
+    @OneToMany(() => Produto, (produto) => produto.categoria)
+    produtos: Produto[];
 }

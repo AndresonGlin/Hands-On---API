@@ -12,25 +12,34 @@ class CategoriaService {
         return await this.categoriaRepository.find();
     }
 
+    public async getCategoriaById(id: string): Promise<Categoria> {
+        const categoria = await this.categoriaRepository.findOneBy({ id });
+
+        if (!categoria) {
+            throw new AppError(404, "Categoria não encontrada!");
+        }
+
+        return categoria;
+    }
+
+
     public async addCategoria(body: unknown): Promise<Categoria> {
 
-        const {  id, nome, descricao, dataCriacao, dataAtualizacao  } = body as Categoria;
+        const {  nome, descricao  } = body as Categoria;
  
-        if(!nome || !dataCriacao || !dataAtualizacao) {
+        if(!nome) {
             throw new Error("Missing required Categoria fields");
         }
 
-        const categoriaExiste = await this.categoriaRepository.findOne({ where: { id } })
+        const categoriaExiste = await this.categoriaRepository.findOne({ where: { nome } })
 
         if(categoriaExiste) {
             throw new AppError(400, "Categoria já cadastrada!");
         }
         const novaCategoria = await this.categoriaRepository.create({
             nome,
-            descricao,
-            dataCriacao,
-            dataAtualizacao
-        })
+            descricao           
+        });
 
         await this.categoriaRepository.save(novaCategoria);
         return novaCategoria;
@@ -64,7 +73,6 @@ class CategoriaService {
 
 
     }
-
 
 }
 

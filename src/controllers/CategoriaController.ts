@@ -17,6 +17,14 @@ export default class CategoriaController {
 
     }
 
+    public async getById(req: Request, res: Response) {
+        const { id } = req.params;            
+        
+        const categoria = await this.categoriaService.getCategoriaById(id as string);        
+        res.status(200).json(categoria);
+
+    }
+
     public async addCategoria(req: Request, res: Response) {
 
             const body = req.body;

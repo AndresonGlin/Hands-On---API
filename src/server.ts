@@ -10,6 +10,7 @@ import compression from "compression";
 
 import errorHandler from "./middlewares/errorHandler.js";
 import categoriaRouter from "./routes/categoriaRoutes.js";
+import produtoRouter from "./routes/produtoRoutes.js";
 
 dotenv.config();
 
@@ -36,6 +37,7 @@ app.use(express.json());
 app.use(compression({ threshold: 1024 }))
 
 app.use('/api', categoriaRouter);
+app.use('/api', produtoRouter);
 
 app.use(errorHandler)
 
